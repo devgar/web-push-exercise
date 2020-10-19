@@ -9,7 +9,7 @@ require('./app/webpush')()
 const app = express()
 const PORT = process.env.PORT || 8080
 
-const loadSubscription = () => {
+const loadSubscriptions = () => {
   try {
     const data = fs.readFileSync(resolve(__dirname, 'sub.json'), 'utf-8')
     return JSON.parse(data)
@@ -18,24 +18,26 @@ const loadSubscription = () => {
   }
 }
 
-let subscription = loadSubscription()
+let subscriptions = loadSubscriptions()
 
 app.use(express.static(resolve(__dirname, 'client')))
 app.use(bodyParser.json())
 
 app.post('/subscription', (req, res, next) => {
-  subscription = req.body
-  fs.writeFile(resolve(__dirname, 'sub.json'), JSON.stringify(subscription), (err) => {
+  subscriptions = [...subscriptions, req.body]
+  fs.writeFile(resolve(__dirname, 'sub.json'), JSON.stringify(subscriptions), (err) => {
     if (err) return next(err)
-    console.log('::GOT SUBSCRIPTION::', subscription)
-    res.status(201).json(subscription)
+    console.log('::GOT SUBSCRIPTION::', req.body)
+    res.status(201).json(subscriptions.length)
   })
 })
 
 app.post('/broadcast', (req, res, next) => {
   console.log('::GOT BROADCAST::', req.body)
   const data = { title: 'Hey, this is a push notification!', ...req.body }
-  webPush.sendNotification(subscription, JSON.stringify(data))
+  subscriptions.forEach(subscription => {
+    webPush.sendNotification(subscription, JSON.stringify(data))
+  })
   res.status(201).json(data)
 })
 
