@@ -2,10 +2,16 @@
   "name": "web-push-exercise",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node -r dotenv/config .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Edgar Albalate <dev.gardo@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "web-push": "^3.4.4"
+  }
 }
