@@ -1,5 +1,4 @@
-const publicVapidKey = 'BBkr8jCqmLsB-CD5S2sE6LrcJMHvuLEBRyvQwHXO2tKKMdE1Sq06ecSQbYQBae-WgX0bjBObpn0LQEHMuP64tA0'
-
+const publicVapidKey = 'PUBLIC_VAPID_KEY'
 // Copied from the web-push documentation
 const urlBase64ToUint8Array = (base64String) => {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
