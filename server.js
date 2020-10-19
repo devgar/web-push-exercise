@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8080
 
 const loadSubscriptions = () => {
   try {
-    const data = fs.readFileSync(resolve(__dirname, 'sub.json'), 'utf-8')
+    const data = fs.readFileSync(resolve(__dirname, 'subs.json'), 'utf-8')
     return JSON.parse(data)
   } catch (err) {
     return null
@@ -25,7 +25,7 @@ app.use(bodyParser.json())
 
 app.post('/subscription', (req, res, next) => {
   subscriptions = [...subscriptions, req.body]
-  fs.writeFile(resolve(__dirname, 'sub.json'), JSON.stringify(subscriptions), (err) => {
+  fs.writeFile(resolve(__dirname, 'subs.json'), JSON.stringify(subscriptions), (err) => {
     if (err) return next(err)
     console.log('::GOT SUBSCRIPTION::', req.body)
     res.status(201).json(subscriptions.length)
